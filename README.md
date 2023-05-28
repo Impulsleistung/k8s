@@ -1,2 +1,1 @@
-# k8s
-Kubernetes
+# Kubernetes and GitHub Actions
