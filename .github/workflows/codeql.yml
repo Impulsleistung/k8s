@@ -25,9 +25,3 @@ jobs:
         with:
           name: codeql-results
           path: ./codeql-results.sarif
-
-    if: always()
-
-    artifacts:
-      paths:
-        - codeql-results.sarif

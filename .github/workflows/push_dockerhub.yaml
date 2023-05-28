@@ -30,4 +30,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker image
-        run: docker push fastapi-app
+        run: docker push impulsleistung/fastapi-app:latest
