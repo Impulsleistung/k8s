@@ -1,3 +1,7 @@
+# Kubernetes Introduction
+
+![Alt text](drawing/containerCloud.png)
+
 Here's a concise cheat sheet for `kubectl`, the command-line tool for Kubernetes:
 
 ### General Syntax
