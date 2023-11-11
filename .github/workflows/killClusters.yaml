@@ -1,0 +1,32 @@
+name: Delete Linode Kubernetes Clusters
+
+on:
+  schedule:
+    - cron: '31 1 * * *'
+
+jobs:
+  delete-clusters:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Delete Linode Kubernetes Clusters
+      env:
+        LINODE_API_TOKEN: ${{ secrets.LINODE_API_TOKEN }}
+      run: |
+        #!/bin/bash
+        set -e
+
+        echo "Fetching cluster IDs..."
+        CLUSTERS=$(curl -H "Authorization: Bearer $LINODE_API_TOKEN" \
+                       https://api.linode.com/v4/lke/clusters | jq -r '.data[].id')
+
+        for CLUSTER_ID in $CLUSTERS
+        do
+          echo "Deleting cluster $CLUSTER_ID..."
+          curl -X DELETE -H "Authorization: Bearer $LINODE_API_TOKEN" \
+               https://api.linode.com/v4/lke/clusters/$CLUSTER_ID
+        done
+
+        echo "All clusters have been deleted."

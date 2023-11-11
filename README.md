@@ -56,3 +56,18 @@ The bash in the container use Double Slashes. Another workaround specific to Git
 
 ### Finding a file with a specific text
 The command `grep -r "Welcome to Kevins Kubernetes" . 2>/dev/null` searches recursively for the string in all files within a specified directory, suppressing error messages by redirecting them to `/dev/null`, a location where they are effectively discarded.
+
+## Excute a remote file 
+### Variant A (curl it)
+Use the -k or --insecure Option with curl
+If updating the CA certificates doesn't solve the problem or if you're in a controlled environment where you trust the source, you can bypass the certificate verification by using the -k or --insecure option with curl. This is not recommended for untrusted sources as it could expose you to security risks.
+
+`curl -k -o replicaset-demo.yml -L https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/raw/master/03-Kubernetes-Fundamentals-with-kubectl/03-02-ReplicaSets-with-kubectl/replicaset-demo.yml`
+
+Then apply it with kubectl:
+`kubectl apply -f replicaset-demo.yml`
+
+### Variant B (direct execute)
+Directly Input the URL in kubectl. Some versions of kubectl might allow you to directly specify a URL with the -f flag, like this:
+`kubectl apply -f https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/raw/master/03-Kubernetes-Fundamentals-with-kubectl/03-02-ReplicaSets-with-kubectl/replicaset-demo.yml`
+
