@@ -3,6 +3,7 @@ name: Delete Linode Kubernetes Clusters
 on:
   schedule:
     - cron: '31 1 * * *'
+  workflow_dispatch:
 
 jobs:
   delete-clusters:
