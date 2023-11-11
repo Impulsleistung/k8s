@@ -1,33 +1,37 @@
 name: Delete Linode Kubernetes Clusters
 
 on:
+  # Schedule the workflow to run every day at 1:31 AM UTC
   schedule:
     - cron: '31 1 * * *'
+  # Allow manual triggering of the workflow
   workflow_dispatch:
 
 jobs:
   delete-clusters:
+    # Run the workflow on the latest Ubuntu-based runner
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Delete Linode Kubernetes Clusters
-      env:
-        LINODE_API_TOKEN: ${{ secrets.LINODE_API_TOKEN }}
-      run: |
-        #!/bin/bash
-        set -e
+      - name: Delete Linode Kubernetes Clusters
+        env:
+          LINODE_API_TOKEN: ${{ secrets.LINODE_API_TOKEN }}
+        run: |
+          #!/bin/bash
+          set -euxo pipefail
 
-        echo "Fetching cluster IDs..."
-        CLUSTERS=$(curl -H "Authorization: Bearer $LINODE_API_TOKEN" \
-                       https://api.linode.com/v4/lke/clusters | jq -r '.data[].id')
+          # Fetch cluster IDs
+          clusters=$(curl -sSL -H "Authorization: Bearer $LINODE_API_TOKEN" \
+            https://api.linode.com/v4/lke/clusters | jq -r '.data[].id')
 
-        for CLUSTER_ID in $CLUSTERS
-        do
-          echo "Deleting cluster $CLUSTER_ID..."
-          curl -X DELETE -H "Authorization: Bearer $LINODE_API_TOKEN" \
-               https://api.linode.com/v4/lke/clusters/$CLUSTER_ID
-        done
+          # Delete each cluster
+          for cluster_id in $clusters; do
+            echo "Deleting cluster $cluster_id..."
+            curl -sSL -X DELETE -H "Authorization: Bearer $LINODE_API_TOKEN" \
+              https://api.linode.com/v4/lke/clusters/$cluster_id
+          done
 
-        echo "All clusters have been deleted."
+          echo "All clusters have been deleted."
