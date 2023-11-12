@@ -75,3 +75,7 @@ Then apply it with kubectl:
 Directly Input the URL in kubectl. Some versions of kubectl might allow you to directly specify a URL with the -f flag, like this:
 `kubectl apply -f https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/raw/master/03-Kubernetes-Fundamentals-with-kubectl/03-02-ReplicaSets-with-kubectl/replicaset-demo.yml`
 
+## Autoscaling
+Use the kubectl autoscale command to create an HPA resource. The command allows you to define the minimum and maximum number of pods, as well as the CPU utilization threshold that triggers scaling: `kubectl autoscale rs my-helloworld-rs --min=2 --max=5 --cpu-percent=80`
+
+After creating the HPA, you can check its status using: `kubectl get hpa`
