@@ -79,3 +79,17 @@ Directly Input the URL in kubectl. Some versions of kubectl might allow you to d
 Use the kubectl autoscale command to create an HPA resource. The command allows you to define the minimum and maximum number of pods, as well as the CPU utilization threshold that triggers scaling: `kubectl autoscale rs my-helloworld-rs --min=2 --max=5 --cpu-percent=80`
 
 After creating the HPA, you can check its status using: `kubectl get hpa`
+
+## Understanding multi-Port Service
+
+Suppose you have a Pod that serves both HTTP and HTTPS traffic, listening on ports 8080 and 8443, respectively. You want to expose these on ports 80 and 443 through the Service.
+
+```yaml
+  ports:
+    - name: http
+      port: 80         #-> **exposure to outside**
+      targetPort: 8080 #-> **internally to cluster**
+    - name: https
+      port: 443
+      targetPort: 8443
+```

@@ -26,6 +26,12 @@ jobs:
           # Fetch NodeBalancer IDs
           nodebalancers=$(curl https://api.linode.com/v4/nodebalancers | jq -r '.data[].id')
 
+          # Check if there are node balancers to delete
+          if [[ -z "$nodebalancers" ]]; then
+            echo "No node balancers found."
+            exit 0
+          fi
+
           # Delete each NodeBalancer
           for nodebalancer_id in $nodebalancers; do
             echo "Deleting NodeBalancer $nodebalancer_id..."
@@ -45,6 +51,12 @@ jobs:
           # Fetch cluster IDs
           clusters=$(curl -sSL -H "Authorization: Bearer $LINODE_API_TOKEN" \
             https://api.linode.com/v4/lke/clusters | jq -r '.data[].id')
+
+          # Check if there are clusters to delete
+          if [[ -z "$clusters" ]]; then
+            echo "No clusters found."
+            exit 0
+          fi
 
           # Delete each cluster
           for cluster_id in $clusters; do
