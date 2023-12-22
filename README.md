@@ -93,3 +93,21 @@ Suppose you have a Pod that serves both HTTP and HTTPS traffic, listening on por
       port: 443
       targetPort: 8443
 ```
+## Get all pods in a cluster
+```bash
+kubectl get pods --all-namespaces -o custom-columns=NAME:.metadata.name | awk 'NR==1; NR>1 {print NR-1, $0}'
+```
+
+This command works as follows:
+
+1. `kubectl get pods --all-namespaces -o custom-columns=NAME:.metadata.name`: Retrieves the names of all the pods from all namespaces, including a heading.
+2. `| awk 'NR==1; NR>1 {print NR-1, $0}'`: Pipes the output into `awk` where:
+   - `NR==1`: For the first record (the heading), it prints the line as is.
+   - `NR>1 {print NR-1, $0}`: For all subsequent records (actual pod names), it prints the line number (starting from 1) followed by the original line.
+
+### Get container names
+To retrieve the name of the containers used in a Kubernetes deployment using `kubectl`, you would typically follow these:
+
+```bash
+kubectl get deployment <deployment-name> -o=jsonpath='{.spec.template.spec.containers[*].name}'
+```
