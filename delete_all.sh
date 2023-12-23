@@ -22,6 +22,9 @@ kubectl delete deployments --all --namespace=$NAMESPACE
 # to avoid any residual network configuration.
 kubectl delete services --all --namespace=$NAMESPACE
 
+# Delete all persistent volume claims (PVCs) in the namespace. PVCs represent storage claims by pods.
+kubectl delete persistentvolumeclaims --all --namespace=$NAMESPACE
+
 # Finally, delete all remaining pods in the namespace. Pods are the smallest deployable units and should be
 # cleaned up last to ensure that all controlled resources are deleted.
 kubectl delete pods --all --namespace=$NAMESPACE
