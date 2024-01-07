@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Optional: Specify a namespace
-NAMESPACE="default"
+NAMESPACE="<your namespace>"
 
 # First, scale all deployments to 0 replicas. This is a safer approach to ensure that no new pods are created
 # by the deployments during the deletion process.

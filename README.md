@@ -111,3 +111,13 @@ To retrieve the name of the containers used in a Kubernetes deployment using `ku
 ```bash
 kubectl get deployment <deployment-name> -o=jsonpath='{.spec.template.spec.containers[*].name}'
 ```
+
+# 27-12-2023
+Service with kubectl
+- ClusterIP: between applications, inside cluster
+- NodePort: outside of cluster, seen by user, 30000-32767, direct access to each node
+- LoadBalancer: Elastic-LB, seen by user, AWS ELB, Google Cloud Load Balancer
+- Ingress: SSL, context based routing, seen by user, rule based
+- externalName: DNS-Alias `mein2452435.aws.com`, `database01.azure.com`
+
+  
