@@ -112,12 +112,70 @@ To retrieve the name of the containers used in a Kubernetes deployment using `ku
 kubectl get deployment <deployment-name> -o=jsonpath='{.spec.template.spec.containers[*].name}'
 ```
 
-# 27-12-2023
-Service with kubectl
+# Service with kubectl
+
 - ClusterIP: between applications, inside cluster
 - NodePort: outside of cluster, seen by user, 30000-32767, direct access to each node
 - LoadBalancer: Elastic-LB, seen by user, AWS ELB, Google Cloud Load Balancer
 - Ingress: SSL, context based routing, seen by user, rule based
 - externalName: DNS-Alias `mein2452435.aws.com`, `database01.azure.com`
 
-  
+## YAML training
+```yaml
+person: # Dictionary representing a person
+  name: kalyan 
+  age: 23 
+  city: Hyderabad
+  hobbies: # List of hobbies
+    - cycling # First hobby in the list
+    - cooking # Second hobby in the list
+
+  friends: # Nested list, each friend is a dictionary
+    - name: friend1 
+      age: 22 
+    - name: friend2 # Name of the second friend
+      age: 25 # Age of the second friend
+```
+
+equals to the following json - notation
+
+```json
+{
+  "person": { // Dictionary representing a person
+    "name": "kalyan",
+    "age": 23,
+    "city": "Hyderabad",
+    "hobbies": [ // List of hobbies
+      "cycling", // First hobby in the list
+      "cooking" // Second hobby in the list
+    ],
+    "friends": [ // Nested list, each friend is a dictionary
+      {
+        "name": "friend1", // Name of the first friend
+        "age": 22 // Age of the first friend
+      },
+      {
+        "name": "friend2", // Name of the second friend
+        "age": 25 // Age of the second friend
+      }
+    ]
+  }
+}
+
+```
+
+equals to the following markdown
+
+| Name   | Age | City      |
+| ------ | --- | --------- |
+| kalyan | 23  | Hyderabad |
+
+| Hobby   |
+| ------- |
+| cycling |
+| cooking |
+
+| Friend Name | Age |
+| ----------- | --- |
+| friend1     | 22  |
+| friend2     | 25  |
