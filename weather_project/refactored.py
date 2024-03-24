@@ -57,7 +57,8 @@ def fetch_and_process_weather_data(client, latitude, longitude, variables, past_
 def plot_weather_data(df):
     """
     Plots the weather data from the DataFrame using a dark theme, adds a grid to the plots,
-    marks the current time with a vertical line, and assigns a different color to each plot.
+    marks the current time with a vertical line, assigns a different color to each plot,
+    and shows the current time as the label of the marker.
     
     Parameters:
     - df: DataFrame containing weather data.
@@ -68,8 +69,9 @@ def plot_weather_data(df):
     # Define a list of colors to cycle through
     colors = ['cyan', 'magenta', 'yellow', 'white', 'red', 'green', 'blue']
     
-    # Find the closest date to the current time in the DataFrame
+    # Get the current time and format it for the label
     current_time = pd.to_datetime(datetime.now(), utc=True)
+    current_time_str = current_time.strftime('%H:%M UTC')
     closest_date = df.iloc[(df['date'] - current_time).abs().argsort()[0]]['date']
     
     for i, var in enumerate(df.columns[1:]):  # Skip date column for plotting
@@ -79,12 +81,13 @@ def plot_weather_data(df):
         axs[i].legend()
         axs[i].grid(True)  # Add grid to the plot
         
-        # Mark the current time with a vertical line
-        axs[i].axvline(x=closest_date, color='r', linestyle='--', label='Current Time')
+        # Mark the current time with a vertical line and label it with the formatted current time string
+        axs[i].axvline(x=closest_date, color='r', linestyle='--', label=f'Current Time: {current_time_str}')
         axs[i].legend()
     
     plt.tight_layout()
     plt.show()
+
 
 
 
