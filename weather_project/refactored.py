@@ -57,7 +57,7 @@ def fetch_and_process_weather_data(client, latitude, longitude, variables, past_
 def plot_weather_data(df):
     """
     Plots the weather data from the DataFrame using a dark theme, adds a grid to the plots,
-    and marks the current time with a vertical line.
+    marks the current time with a vertical line, and assigns a different color to each plot.
     
     Parameters:
     - df: DataFrame containing weather data.
@@ -65,12 +65,16 @@ def plot_weather_data(df):
     plt.style.use('dark_background')  # Use dark theme for the plots
     fig, axs = plt.subplots(nrows=len(df.columns) - 1, ncols=1, figsize=(10, 8))
     
+    # Define a list of colors to cycle through
+    colors = ['cyan', 'magenta', 'yellow', 'white', 'red', 'green', 'blue']
+    
     # Find the closest date to the current time in the DataFrame
     current_time = pd.to_datetime(datetime.now(), utc=True)
     closest_date = df.iloc[(df['date'] - current_time).abs().argsort()[0]]['date']
     
     for i, var in enumerate(df.columns[1:]):  # Skip date column for plotting
-        axs[i].plot(df['date'], df[var], label=var, marker='o', markersize=3, linestyle='-')
+        color = colors[i % len(colors)]  # Cycle through the list of colors
+        axs[i].plot(df['date'], df[var], label=var, color=color, marker='o', markersize=3, linestyle='-')
         axs[i].set_title(var)
         axs[i].legend()
         axs[i].grid(True)  # Add grid to the plot
@@ -81,6 +85,7 @@ def plot_weather_data(df):
     
     plt.tight_layout()
     plt.show()
+
 
 
 # Usage Example
