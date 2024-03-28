@@ -173,17 +173,18 @@ def plot_weather_data(df, export_html=False):
 
 import json  # Add this import if not already present
 
+
 def save_data_as_json(data, filename="weather.json"):
     """
     Saves the given data in a JSON file.
-    
+
     Parameters:
     - data: Pandas DataFrame containing the weather data.
     - filename: The path and name of the file where the data will be saved.
     """
     # Convert the pandas DataFrame to a JSON string
     json_str = data.to_json(orient="records")
-    
+
     # Write the JSON string to a file
     with open(filename, "w") as file:
         file.write(json_str)
