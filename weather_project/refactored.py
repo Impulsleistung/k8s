@@ -1,3 +1,4 @@
+import json
 import openmeteo_requests
 import requests_cache
 import pandas as pd
@@ -170,6 +171,26 @@ def plot_weather_data(df, export_html=False):
 
 # Then, you would proceed with the rest of your code to use these updated functions.
 
+import json  # Add this import if not already present
+
+def save_data_as_json(data, filename="weather.json"):
+    """
+    Saves the given data in a JSON file.
+    
+    Parameters:
+    - data: Pandas DataFrame containing the weather data.
+    - filename: The path and name of the file where the data will be saved.
+    """
+    # Convert the pandas DataFrame to a JSON string
+    json_str = data.to_json(orient="records")
+    
+    # Write the JSON string to a file
+    with open(filename, "w") as file:
+        file.write(json_str)
+
+    print(f"Data successfully saved to {filename}.")
+
+
 # Usage Example
 openmeteo_client = setup_openmeteo_api_client()
 weather_df = fetch_and_process_weather_data(
@@ -182,3 +203,4 @@ weather_df = fetch_and_process_weather_data(
 )
 print(weather_df.head())  # Displaying a part of the DataFrame for verification
 plot_weather_data(weather_df, export_html=True)
+save_data_as_json(weather_df)
