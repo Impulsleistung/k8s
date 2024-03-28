@@ -4,22 +4,29 @@ import pandas as pd
 from retry_requests import retry
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from matplotlib.ticker import AutoMinorLocator  # Corrected import
 from datetime import datetime
+import mpld3
+import base64
+
 
 def setup_openmeteo_api_client():
     """
     Sets up the Open-Meteo API client with caching and retry mechanisms.
     Returns an Open-Meteo client object.
     """
-    cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
+    cache_session = requests_cache.CachedSession(".cache", expire_after=3600)
     retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
     openmeteo_client = openmeteo_requests.Client(session=retry_session)
     return openmeteo_client
 
-def fetch_and_process_weather_data(client, latitude, longitude, variables, past_days, forecast_days):
+
+def fetch_and_process_weather_data(
+    client, latitude, longitude, variables, past_days, forecast_days
+):
     """
     Fetches and processes weather data for a given location.
-    
+
     Parameters:
     - client: Open-Meteo client object.
     - latitude: Latitude of the location.
@@ -36,9 +43,11 @@ def fetch_and_process_weather_data(client, latitude, longitude, variables, past_
         "longitude": longitude,
         "hourly": variables,
         "past_days": past_days,
-        "forecast_days": forecast_days
+        "forecast_days": forecast_days,
     }
-    response = client.weather_api(url, params=params)[0]  # Assuming single location for simplicity
+    response = client.weather_api(url, params=params)[
+        0
+    ]  # Assuming single location for simplicity
     hourly = response.Hourly()
 
     hourly_data = {
@@ -46,7 +55,7 @@ def fetch_and_process_weather_data(client, latitude, longitude, variables, past_
             start=pd.to_datetime(hourly.Time(), unit="s", utc=True),
             end=pd.to_datetime(hourly.TimeEnd(), unit="s", utc=True),
             freq=pd.Timedelta(seconds=hourly.Interval()),
-            inclusive="left"
+            inclusive="left",
         )
     }
     for i, variable in enumerate(variables):
@@ -54,42 +63,112 @@ def fetch_and_process_weather_data(client, latitude, longitude, variables, past_
 
     return pd.DataFrame(data=hourly_data)
 
-def plot_weather_data(df):
+
+import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
+import matplotlib.dates as mdates
+from datetime import datetime
+import mpld3
+import base64
+
+# Additional imports
+import pandas as pd
+
+# Assuming other functions (setup_openmeteo_api_client, fetch_and_process_weather_data) remain unchanged
+
+
+import base64  # Ensure this import is at the top of your script
+
+
+def export_plot_to_html(fig):
     """
-    Plots the weather data from the DataFrame using a dark theme, adds a grid to the plots,
+    Exports the given matplotlib figure to an HTML file, embedding the plot as a base64 image.
+
+    Parameters:
+    - fig: The matplotlib figure to export.
+    """
+    plt.savefig("weather_plot.jpg", format="jpg")
+    plt.close(fig)  # Close the plot to free memory
+
+    # Encode the saved image to base64
+    with open("weather_plot.jpg", "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
+
+    # Embed the JPG in an HTML file
+    html_template = f"""
+    <html>
+    <head>
+    <title>Pforzheim Weather</title>
+    <style>
+        body {{
+            background-color: black;
+            color: white;
+        }}
+    </style>
+    </head>
+    <body>
+    <img src="data:image/jpg;base64,{encoded_string}" alt="Pforzheim Weather">
+    </body>
+    </html>
+    """
+
+    # Write the HTML to a file
+    with open("weather_plot.html", "w") as f:
+        f.write(html_template)
+
+
+def plot_weather_data(df, export_html=False):
+    """
+    Plots the weather data from the DataFrame using a dark theme, adds a high-contrast grid to the plots,
     marks the current time with a vertical line, assigns a different color to each plot,
-    and shows the current time as the label of the marker.
-    
+    and shows the current time as the label of the marker. Minor ticks are added to the grid for better granularity.
+
     Parameters:
     - df: DataFrame containing weather data.
+    - export_html: If True, exports the plot as an HTML file embedded with the plot image.
     """
-    plt.style.use('dark_background')  # Use dark theme for the plots
+    # Use dark background theme
+    plt.style.use("dark_background")
+
     fig, axs = plt.subplots(nrows=len(df.columns) - 1, ncols=1, figsize=(10, 8))
-    
-    # Define a list of colors to cycle through
-    colors = ['cyan', 'magenta', 'yellow', 'white', 'red', 'green', 'blue']
-    
-    # Get the current time and format it for the label
+
+    # Define high contrast colors
+    colors = ["cyan", "magenta", "yellow", "white", "red", "green", "blue"]
     current_time = pd.to_datetime(datetime.now(), utc=True)
-    current_time_str = current_time.strftime('%H:%M UTC')
-    closest_date = df.iloc[(df['date'] - current_time).abs().argsort()[0]]['date']
-    
-    for i, var in enumerate(df.columns[1:]):  # Skip date column for plotting
-        color = colors[i % len(colors)]  # Cycle through the list of colors
-        axs[i].plot(df['date'], df[var], label=var, color=color, marker='o', markersize=3, linestyle='-')
+    current_time_str = current_time.strftime("%H:%M UTC")
+    closest_date = df.iloc[(df["date"] - current_time).abs().argsort()[0]]["date"]
+
+    for i, var in enumerate(df.columns[1:]):
+        color = colors[i % len(colors)]
+        axs[i].plot(
+            df["date"],
+            df[var],
+            label=var,
+            color=color,
+            marker="o",
+            markersize=3,
+            linestyle="-",
+        )
         axs[i].set_title(var)
         axs[i].legend()
-        axs[i].grid(True)  # Add grid to the plot
-        
-        # Mark the current time with a vertical line and label it with the formatted current time string
-        axs[i].axvline(x=closest_date, color='r', linestyle='--', label=f'Current Time: {current_time_str}')
+
+        # Set grid and add minor ticks
+        axs[i].grid(True, which="both", linestyle="--", linewidth=0.5)
+
+        # Mark the current time
+        axs[i].axvline(
+            x=closest_date,
+            color="r",
+            linestyle="--",
+            label=f"Current Time: {current_time_str}",
+        )
         axs[i].legend()
-    
+
     plt.tight_layout()
-    plt.show()
+    export_plot_to_html(fig)
 
 
-
+# Then, you would proceed with the rest of your code to use these updated functions.
 
 # Usage Example
 openmeteo_client = setup_openmeteo_api_client()
@@ -99,7 +178,7 @@ weather_df = fetch_and_process_weather_data(
     longitude=8.6989,
     variables=["temperature_2m", "rain", "surface_pressure"],
     past_days=3,
-    forecast_days=3
+    forecast_days=3,
 )
 print(weather_df.head())  # Displaying a part of the DataFrame for verification
-plot_weather_data(weather_df)
+plot_weather_data(weather_df, export_html=True)
