@@ -179,3 +179,48 @@ equals to the following markdown
 | ----------- | --- |
 | friend1     | 22  |
 | friend2     | 25  |
+
+## Deployment and Service connection by labels
+
+Certainly! Here's how you can add comments to the YAML files to clarify the purpose of each `app: example-app` label.
+
+### Deployment YAML with Comments
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: example-app # This label is used by the Deployment to manage its Pods.
+  template:
+    metadata:
+      labels:
+        app: example-app # This label is assigned to Pods and used by the Service for traffic routing.
+    spec:
+      containers:
+      - name: example-container
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+### Service YAML with Comments
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-service
+spec:
+  selector:
+    app: example-app # The Service uses this selector to identify and route traffic to the correct Pods.
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+```
