@@ -268,3 +268,13 @@ metadata:
 ```
 
 This combination of labels indicates that the object is part of the "myapp" application and specifically belongs to the backend tier.
+
+## Delete manifests
+
+You can add the --ignore-not-found flag to suppress these errors:
+
+```bash
+kubectl delete -f kubernetes-manifests/ --ignore-not-found
+```
+
+Remember, deleting deployments will remove the associated pods and potentially disrupt your application. Make sure this is what you intend to do before proceeding with the deletion.
