@@ -255,3 +255,16 @@ spec:
 Both must have a service to function
 
 ![alt text](drawing/frontend-backend.jpg)
+
+## The labels *app* and *tier*
+
+Using these labels together allows for more granular organization and selection of resources. For instance:
+
+```yaml
+metadata:
+  labels:
+    app: myapp
+    tier: backend
+```
+
+This combination of labels indicates that the object is part of the "myapp" application and specifically belongs to the backend tier.
