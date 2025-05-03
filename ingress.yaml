@@ -8,8 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
@@ -29,8 +28,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
-      http:
+    - http:
         paths:
           - path: /k2
             pathType: Prefix
@@ -50,8 +48,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
-      http:
+    - http:
         paths:
           - path: /k5
             pathType: Prefix
@@ -71,8 +68,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
-      http:
+    - http:
         paths:
           - path: /k3
             pathType: Prefix
@@ -92,8 +88,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
-      http:
+    - http:
         paths:
           - path: /k4
             pathType: Prefix
