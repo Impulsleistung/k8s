@@ -3,34 +3,34 @@ kind: Ingress
 metadata:
   name: main-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
   - http:
       paths:
-      - path: /
+      - path: /()(.*)
         pathType: Prefix
         backend:
           service:
             name: website-service
             port:
               number: 80
-      - path: /k2
+      - path: /k2(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: gradio-service
             port:
               number: 80
-      - path: /k3
+      - path: /k3(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: firefox-service
             port:
               number: 80
-      - path: /k4
+      - path: /k4(/|$)(.*)
         pathType: Prefix
         backend:
           service:
