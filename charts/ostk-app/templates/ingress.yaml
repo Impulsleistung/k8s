@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ostk-ingress
+  namespace: aaa-ns
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+        {{- range .Values.apps }}
+          - path: {{ .path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .name }}-service
+                port:
+                  number: {{ .port }}
+        {{- end }}

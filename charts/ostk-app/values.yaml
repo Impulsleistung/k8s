@@ -1,0 +1,24 @@
+apps:
+  - name: aaa
+    namespace: aaa-ns
+    image: imp2/standard-website:latest
+    path: /
+    port: 80
+  - name: bbb
+    namespace: bbb-ns
+    image: imp2/gradio-text-converter:latest
+    path: /k2
+    port: 7860
+  - name: ddd
+    namespace: ddd-ns
+    image: imp2/ubuntu-firefox
+    path: /k3
+    port: 80
+  - name: eee
+    namespace: eee-ns
+    image: imp2/sonar-app
+    path: /k4
+    port: 80
+
+ingress:
+  host: www.ostk.cloud
