@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ddd-ns
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firefox-deployment
+  namespace: ddd-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: firefox
+  template:
+    metadata:
+      labels:
+        app: firefox
+    spec:
+      containers:
+      - name: firefox
+        image: imp2/ubuntu-firefox:latest
+        ports:
+        - containerPort: 6901
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: firefox-service
+  namespace: ddd-ns
+spec:
+  selector:
+    app: firefox
+  ports:
+  - port: 80
+    targetPort: 6901
