@@ -1,39 +1,41 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: main-ingress
+  name: ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
-  ingressClassName: nginx
   rules:
   - http:
       paths:
-      - path: /()(.*)
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: website-service
+            name: aaa-service
             port:
-              number: 80
+              number: 8081
       - path: /k2(/|$)(.*)
         pathType: Prefix
         backend:
           service:
-            name: gradio-service
+            name: bbb-service
             port:
-              number: 80
+              number: 8082
       - path: /k3(/|$)(.*)
         pathType: Prefix
         backend:
           service:
-            name: firefox-service
+            name: ddd-service
             port:
-              number: 80
+              number: 8084
       - path: /k4(/|$)(.*)
         pathType: Prefix
         backend:
           service:
-            name: sonar-service
+            name: eee-service
             port:
-              number: 80
+              number: 8085

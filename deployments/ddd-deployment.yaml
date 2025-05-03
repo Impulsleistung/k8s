@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ddd-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ddd
+  template:
+    metadata:
+      labels:
+        app: ddd
+    spec:
+      containers:
+      - name: ddd
+        image: imp2/ubuntu-firefox:latest
+        ports:
+        - containerPort: 8084
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        readinessProbe:
+          tcpSocket:
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 10
