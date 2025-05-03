@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bbb-app
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Impulsleistung/k8s.git
+    targetRevision: HEAD
+    path: helm/bbb-chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bbb-ns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

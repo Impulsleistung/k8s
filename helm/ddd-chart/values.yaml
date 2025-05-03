@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: imp2/ubuntu-firefox
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 6901
+
+ingress:
+  enabled: true
+  hostname: 29137147-cf8f-4673-a55a-028b2b89af31.lb.civo.com
+  path: /k3
+  annotations: {}
+
+resources: {}

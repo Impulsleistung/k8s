@@ -1,0 +1,5 @@
+apiVersion: v2
+name: bbb-chart
+description: Helm chart for deployment BBB (Gradio Text Converter)
+version: 0.1.0
+appVersion: "1.0"

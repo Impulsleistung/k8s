@@ -1,0 +1,5 @@
+apiVersion: v2
+name: aaa-chart
+description: Helm chart for deployment AAA (Static Homepage)
+version: 0.1.0
+appVersion: "1.0"

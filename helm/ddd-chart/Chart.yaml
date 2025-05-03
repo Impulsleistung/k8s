@@ -1,0 +1,5 @@
+apiVersion: v2
+name: ddd-chart
+description: Helm chart for deployment DDD (Ubuntu Firefox)
+version: 0.1.0
+appVersion: "1.0"
