@@ -44,12 +44,17 @@ kubectl apply -f argocd/applications.yaml
 
 Warte, bis alle Pods laufen (`kubectl get pods -A`).
 
-Öffne im Browser:
+Um die externe IP des Ingress-Controllers bzw. des Load Balancers zu ermitteln, führen Sie folgenden Befehl aus:
 
-- `http://YOUR_DOMAIN/` (Static Homepage)
-- `http://YOUR_DOMAIN/k2` (Markdown Converter)
-- `http://YOUR_DOMAIN/k3` (Ubuntu Desktop mit Firefox)
-- `http://YOUR_DOMAIN/k4` (Sonar App)
+```bash
+kubectl get svc -n ingress-nginx
+```
+
+Suchen Sie in der Ausgabe nach der Spalte EXTERNAL-IP. Diese IP-Adresse verwenden Sie als YOUR_DOMAIN. Öffnen Sie im Browser:
+- http://EXTERNAL-IP/ (Static Homepage)
+- http://EXTERNAL-IP/k2 (Markdown Converter)
+- http://EXTERNAL-IP/k3 (Ubuntu Desktop mit Firefox)
+- http://EXTERNAL-IP/k4 (Sonar App)
 
 Ersetze `YOUR_DOMAIN` mit der Domain oder IP-Adresse deines Load Balancers.
 
@@ -76,4 +81,3 @@ graph LR
     subgraph eee-ns
         EEE-Service --> EEE-Deployment[Deployment: sonar-app]
     end
-```

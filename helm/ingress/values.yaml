@@ -2,6 +2,7 @@ ingress:
   enabled: true
   annotations:
     kubernetes.io/ingress.class: nginx
+  ingressClassName: nginx  # IngressClass hinzugefügt
   hosts:
     - host: YOUR_DOMAIN
       paths:
