@@ -2,9 +2,9 @@ ingress:
   enabled: true
   annotations:
     kubernetes.io/ingress.class: nginx
-  ingressClassName: nginx  # IngressClass hinzugefügt
+  ingressClassName: nginx
   hosts:
-    - host: YOUR_DOMAIN
+    - host: 74.220.28.127  # Externe IP-Adresse gesetzt
       paths:
         - path: /
           backend:
