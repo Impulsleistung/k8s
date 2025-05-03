@@ -22,6 +22,7 @@ spec:
             backend:
               service:
                 name: bbb-service
+                namespace: bbb-ns
                 port:
                   number: 80
           - path: /k3
@@ -29,6 +30,7 @@ spec:
             backend:
               service:
                 name: ddd-service
+                namespace: ddd-ns
                 port:
                   number: 80
           - path: /k4
@@ -36,5 +38,6 @@ spec:
             backend:
               service:
                 name: eee-service
+                namespace: eee-ns
                 port:
                   number: 80

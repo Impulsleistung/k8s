@@ -50,7 +50,7 @@
 2.  **Access the applications in your web browser:**
 
     -   AAA: `http://471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com/`
-    -   BBB: `http://471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com/k2`
+    -   BBB: `http://74.220.28.127/k2`
     -   DDD: `http://471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com/k3`
     -   EEE: `http://471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com/k4`
 
