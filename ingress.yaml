@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aaa-service
+                port:
+                  number: 80
+          - path: /k2
+            pathType: Prefix
+            backend:
+              service:
+                name: bbb-service
+                port:
+                  number: 80
+          - path: /k3
+            pathType: Prefix
+            backend:
+              service:
+                name: ddd-service
+                port:
+                  number: 80
+          - path: /k4
+            pathType: Prefix
+            backend:
+              service:
+                name: eee-service
+                port:
+                  number: 80

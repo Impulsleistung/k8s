@@ -1,0 +1,10 @@
+replicaCount: 1
+
+image:
+  repository: imp2/sonar-app
+  pullPolicy: IfNotPresent
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
