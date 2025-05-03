@@ -1,7 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: main-ingress
+  name: aaa-ingress
+  namespace: aaa-ns
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -17,27 +18,87 @@ spec:
                 name: aaa-service
                 port:
                   number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bbb-ingress
+  namespace: bbb-ns
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
+      http:
+        paths:
           - path: /k2
             pathType: Prefix
             backend:
               service:
                 name: bbb-service
-                namespace: bbb-ns
                 port:
                   number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ccc-ingress
+  namespace: ccc-ns
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
+      http:
+        paths:
+          - path: /k5
+            pathType: Prefix
+            backend:
+              service:
+                name: ccc-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ddd-ingress
+  namespace: ddd-ns
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
+      http:
+        paths:
           - path: /k3
             pathType: Prefix
             backend:
               service:
                 name: ddd-service
-                namespace: ddd-ns
                 port:
                   number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: eee-ingress
+  namespace: eee-ns
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: 471f6fe0-f767-4ae6-bbdc-dd687bff86d.k8s.civo.com
+      http:
+        paths:
           - path: /k4
             pathType: Prefix
             backend:
               service:
                 name: eee-service
-                namespace: eee-ns
                 port:
                   number: 80
