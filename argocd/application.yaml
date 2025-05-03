@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   source:
     path: charts/ostk-app
-    repoURL: <DEIN_GIT_REPO_URL>
+    repoURL: https://github.com/Impulsleistung/k8s.git
     targetRevision: HEAD
     helm:
       valueFiles:
