@@ -12,13 +12,13 @@ ingress:
             servicePort: 80
         - path: /k2
           backend:
-            serviceName: bbb-service
+            serviceName: bbb-service.bbb-ns
             servicePort: 7860
         - path: /k3
           backend:
-            serviceName: ddd-service
+            serviceName: ddd-service.ddd-ns
             servicePort: 80
         - path: /k4
           backend:
-            serviceName: eee-service
+            serviceName: eee-service.eee-ns
             servicePort: 80
