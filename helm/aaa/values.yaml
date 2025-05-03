@@ -1,6 +1,0 @@
-replicaCount: 2
-image:
-  repository: imp2/standard-website
-  tag: latest
-service:
-  port: 80

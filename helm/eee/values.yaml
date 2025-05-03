@@ -1,6 +1,0 @@
-replicaCount: 1
-image:
-  repository: imp2/sonar-app
-  tag: latest
-service:
-  port: 80
