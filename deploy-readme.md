@@ -1,40 +1,79 @@
-# Deployment Anleitung
+# Kubernetes Deployment Anleitung
 
 ## Voraussetzungen
+
 - Kubernetes Cluster (Cloud Provider)
 - Helm installiert
 - ArgoCD installiert
 - KUBECONFIG gesetzt
 
-## Schritte
+## Schritte zur Bereitstellung
 
-### 1. Namespaces erstellen
+### 1. Repository klonen
+
 ```bash
-kubectl create ns aaa-ns
-kubectl create ns bbb-ns
-kubectl create ns ddd-ns
-kubectl create ns eee-ns
+git clone https://github.com/Impulsleistung/k8s.git
+cd k8s
 ```
 
-### 2. Helm Chart testen
+### 2. Namespaces erstellen
+
 ```bash
-helm install ostk-app ./charts/ostk-app --dry-run --debug
+kubectl create namespace aaa-ns
+kubectl create namespace bbb-ns
+kubectl create namespace ddd-ns
+kubectl create namespace eee-ns
+kubectl create namespace ingress-nginx
 ```
 
-### 3. Helm Chart in Git Repository pushen
-- Commit und Push in dein Git Repository
+### 3. Ingress Controller installieren (falls noch nicht vorhanden)
 
-### 4. ArgoCD Application deployen
 ```bash
-kubectl apply -f argocd/application.yaml
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx
 ```
 
-### 5. DNS konfigurieren
-- Bei Namecheap DNS-Eintrag für `www.ostk.cloud` auf die IP-Adresse des Cloud Load Balancers setzen.
+### 4. ArgoCD ApplicationSet deployen
 
-### 6. Zugriff testen
-- Öffne im Browser:
-  - http://www.ostk.cloud/
-  - http://www.ostk.cloud/k2
-  - http://www.ostk.cloud/k3
-  - http://www.ostk.cloud/k4
+```bash
+kubectl apply -f argocd/applications.yaml
+```
+
+### 5. Zugriff testen
+
+Warte, bis alle Pods laufen (`kubectl get pods -A`).
+
+Öffne im Browser:
+
+- `http://YOUR_DOMAIN/` (Static Homepage)
+- `http://YOUR_DOMAIN/k2` (Markdown Converter)
+- `http://YOUR_DOMAIN/k3` (Ubuntu Desktop mit Firefox)
+- `http://YOUR_DOMAIN/k4` (Sonar App)
+
+Ersetze `YOUR_DOMAIN` mit der Domain oder IP-Adresse deines Load Balancers.
+
+## Architekturübersicht
+
+```mermaid
+graph LR
+    User -->|Accesses URL| LB[Cloud Load Balancer]
+    LB --> IngressController[Ingress Controller]
+    IngressController --> Ingress[Ingress Resource]
+    Ingress -->|Path /| AAA-Service
+    Ingress -->|Path /k2| BBB-Service
+    Ingress -->|Path /k3| DDD-Service
+    Ingress -->|Path /k4| EEE-Service
+    subgraph aaa-ns
+        AAA-Service --> AAA-Deployment[Deployment: static-website]
+    end
+    subgraph bbb-ns
+        BBB-Service --> BBB-Deployment[Deployment: gradio-converter]
+    end
+    subgraph ddd-ns
+        DDD-Service --> DDD-Deployment[Deployment: ubuntu-firefox]
+    end
+    subgraph eee-ns
+        EEE-Service --> EEE-Deployment[Deployment: sonar-app]
+    end
+```

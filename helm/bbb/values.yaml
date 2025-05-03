@@ -1,0 +1,6 @@
+replicaCount: 2
+image:
+  repository: imp2/gradio-text-converter
+  tag: latest
+service:
+  port: 7860

@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: k8s-applications
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: aaa
+            namespace: aaa-ns
+          - name: bbb
+            namespace: bbb-ns
+          - name: ddd
+            namespace: ddd-ns
+          - name: eee
+            namespace: eee-ns
+          - name: ingress
+            namespace: ingress-nginx
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Impulsleistung/k8s.git
+        targetRevision: HEAD
+        path: helm/{{name}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
