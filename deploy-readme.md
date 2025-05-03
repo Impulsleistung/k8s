@@ -29,7 +29,7 @@ kubectl apply -f manifests/ingress.yaml
 
 ## Testen der Anwendungen
 
-Die Anwendungen sind über folgende URLs erreichbar:
+Alle Anwendungen sind über Port 80 erreichbar:
 
 - Standard Website: http://74.220.28.127/
 - Gradio Text Converter: http://74.220.28.127/k2
@@ -43,3 +43,6 @@ kubectl get pods --all-namespaces
 kubectl get ingress
 kubectl get services --all-namespaces
 ```
+
+## Wichtiger Hinweis
+Alle Container sind für den Betrieb auf Port 80 konfiguriert. Stellen Sie sicher, dass Ihre Container-Images entsprechend konfiguriert sind.

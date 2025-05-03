@@ -22,7 +22,7 @@ spec:
       - name: firefox
         image: imp2/ubuntu-firefox:latest
         ports:
-        - containerPort: 6901
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -34,4 +34,4 @@ spec:
     app: firefox
   ports:
   - port: 80
-    targetPort: 6901
+    targetPort: 80
