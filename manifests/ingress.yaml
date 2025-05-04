@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  namespace: aaa-bbb-ns
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: website
+                port:
+                  number: 80
+          - path: /g1(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: gradio
+                port:
+                  number: 7860
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gradio-ws-ingress
+  namespace: aaa-bbb-ns
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /g1/queue/join
+            pathType: Prefix
+            backend:
+              service:
+                name: gradio
+                port:
+                  number: 7860
+          - path: /g1/queue/data
+            pathType: Prefix
+            backend:
+              service:
+                name: gradio
+                port:
+                  number: 7860

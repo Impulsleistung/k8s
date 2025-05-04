@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gradio-text-converter
+  name: gradio
   namespace: aaa-bbb-ns
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gradio-text-converter
+      app: gradio
   template:
     metadata:
       labels:
-        app: gradio-text-converter
+        app: gradio
     spec:
       containers:
-        - name: gradio-text-converter
+        - name: gradio
           image: imp2/gradio-text-converter:latest
           ports:
             - containerPort: 7860

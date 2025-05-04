@@ -1,0 +1,13 @@
+k8s/
+├── manifests/
+│   ├── namespace.yaml
+│   ├── website/
+│   │   ├── deployment.yaml
+│   │   └── service.yaml
+│   ├── gradio/
+│   │   ├── deployment.yaml
+│   │   └── service.yaml
+│   └── ingress.yaml
+├── scripts/
+│   └── deploy.sh
+└── deploy-readme.md

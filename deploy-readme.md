@@ -1,63 +1,93 @@
-# Deployment Instructions
+# Deployment Guide
 
-## Prerequisites
+## Voraussetzungen
+- Kubernetes Cluster auf Civo.com
+- kubectl konfiguriert mit korrektem KUBECONFIG
+- Ingress-Controller bereits installiert
 
--   kubectl installed and configured to connect to your Civo Kubernetes cluster.
--   KUBECONFIG environment variable set to the path of your kubeconfig file.
--   Bash shell
+## Deployment Schritte
 
-## Deployment Steps
+1. Ins Projektverzeichnis wechseln:
+   ```bash
+   cd scripts
+   ```
 
-1.  **Clone this repository.**
-2.  **Navigate to the `k8s` directory.**
+2. Deployment-Skript ausführen:
+   ```bash
+   chmod +x deploy.sh
+   ./deploy.sh
+   ```
 
-    ```bash
-    cd k8s
-    ```
-3.  **Run the deployment script:**
+## Überprüfung der Deployment-Status
 
-    ```bash
-    bash deploy.sh
-    ```
+Überprüfen Sie die Pods:
+```bash
+kubectl get pods -n aaa-bbb-ns
+```
 
-    This script will:
+Überprüfen Sie die Services:
+```bash
+kubectl get services -n aaa-bbb-ns
+```
 
-    -   Create the `aaa-bbb-ns` namespace.
-    -   Deploy the static website and Gradio Text Converter deployments and services.
-    -   Deploy the ingress to route traffic to the services.
-    -   Wait for the deployments to be ready.
-    -   Print the URLs for accessing the applications.
+Überprüfen Sie den Ingress:
+```bash
+kubectl get ingress -n aaa-bbb-ns
+```
 
-## Testing the Applications
+## Testen der Anwendungen
 
-Once the deployment is complete, you can access the applications in your web browser using the following URLs:
+Die Anwendungen sind über folgende URLs erreichbar:
 
--   **Static Website:** `http://<ingress-address>/`
--   **Gradio Text Converter:** `http://<ingress-address>/g1`
+- Website: http://74.220.29.142/
+- Gradio Converter: http://74.220.29.142/g1/
 
-Replace `<ingress-address>` with the address provided by the deployment script.  It will look something like `29137147-cf8f-4673-a55a-028b2b89af31.lb.civo.com`.
+Wichtig: Für Gradio muss der URL mit einem Schrägstrich enden ("/g1/")
 
-## Checking the Deployment in the Kubernetes Dashboard
+## Kubernetes Dashboard
 
-1.  **Access the Kubernetes Dashboard:**
+1. Öffnen Sie das Kubernetes Dashboard
+2. Wählen Sie den Namespace "aaa-bbb-ns"
+3. Überprüfen Sie:
+   - Deployments
+   - Pods
+   - Services
+   - Ingress
 
-    You can access the Kubernetes Dashboard using `kubectl proxy`.  Open a new terminal and run:
+## Fehlerbehebung
 
-    ```bash
-    kubectl proxy
-    ```
+Bei Problemen überprüfen Sie:
+```bash
+kubectl describe pods -n aaa-bbb-ns
+kubectl logs -n aaa-bbb-ns [pod-name]
+kubectl describe ingress -n aaa-bbb-ns
+```
 
-    Then, open your web browser and navigate to `http://localhost:8001/`.
+### Bekannte Probleme
 
-2.  **Navigate to the `aaa-bbb-ns` namespace.**
-3.  **Check the status of the deployments and services.**
+#### Schwarzer Bildschirm bei Gradio
 
-    -   Verify that the deployments (`static-website` and `gradio-text-converter`) are running and have the desired number of replicas.
-    -   Verify that the services (`static-website-service` and `gradio-text-converter-service`) are available.
-    -   Check the ingress (`main-ingress`) to ensure that it is configured correctly and has an address assigned.
+Wenn der Gradio Text Converter einen schwarzen Bildschirm zeigt:
 
-## Troubleshooting
+1. Überprüfen Sie die Pod-Logs:
+```bash
+kubectl logs -n aaa-bbb-ns -l app=gradio
+```
 
--   If the applications are not accessible, check the status of the deployments, services, and ingress in the Kubernetes Dashboard.
--   Check the logs of the pods for any errors.
--   Ensure that the Civo load balancer is configured correctly and is routing traffic to the Kubernetes nodes.
+2. Prüfen Sie, ob beide Ingress-Ressourcen korrekt konfiguriert sind:
+```bash
+kubectl get ingress -n aaa-bbb-ns
+```
+
+3. Überprüfen Sie die Pod-Verbindungen:
+```bash
+kubectl exec -n aaa-bbb-ns $(kubectl get pod -n aaa-bbb-ns -l app=gradio -o name | head -n 1) -- netstat -an
+```
+
+4. Neustart der Pods wenn nötig:
+```bash
+kubectl rollout restart deployment/gradio -n aaa-bbb-ns
+```
+
+Die Anwendung sollte nun unter http://74.220.29.142/g1 erreichbar sein.
+Nach Änderungen an der Ingress-Konfiguration kann es einige Minuten dauern, bis diese vollständig übernommen wurden.

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: static-website
+  name: website
   namespace: aaa-bbb-ns
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: static-website
+      app: website
   template:
     metadata:
       labels:
-        app: static-website
+        app: website
     spec:
       containers:
-        - name: static-website
+        - name: website
           image: imp2/standard-website:latest
           ports:
             - containerPort: 80
