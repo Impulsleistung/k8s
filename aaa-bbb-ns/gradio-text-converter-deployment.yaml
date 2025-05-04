@@ -1,33 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bbb-deployment
-  namespace: aaa-ns
+  name: gradio-text-converter
+  namespace: aaa-bbb-ns
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bbb
+      app: gradio-text-converter
   template:
     metadata:
       labels:
-        app: bbb
+        app: gradio-text-converter
     spec:
       containers:
         - name: gradio-text-converter
           image: imp2/gradio-text-converter:latest
           ports:
             - containerPort: 7860
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: bbb-service
-  namespace: aaa-ns
-spec:
-  selector:
-    app: bbb
-  ports:
-    - protocol: TCP
-      port: 8082
-      targetPort: 7860

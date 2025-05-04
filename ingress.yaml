@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  namespace: aaa-bbb-ns
+  annotations:
+    kubernetes.io/ingress.class: "civo"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: static-website-service
+                port:
+                  number: 80
+          - path: /g1
+            pathType: Prefix
+            backend:
+              service:
+                name: gradio-text-converter-service
+                port:
+                  number: 7860
